@@ -14,11 +14,11 @@
 
     <div class="content">
         <div class="container-fluid">
-            {{ super() }}
             {% block model_menu_bar %}
                 <ul class="nav nav-tabs actions-nav">
                     <li class="nav-item">
-                        <a href="javascript:void(0)" class="active nav-link">{{ _gettext('List') }}{% if count %} ({{ count }}){% endif %}</a>
+                        <a href="javascript:void(0)" class="active nav-link">
+                            {{ _gettext('List') }}{% if count %} ({{ count }}){% endif %}</a>
                     </li>
 
                     {% if admin_view.can_create %}
@@ -26,20 +26,53 @@
                             {%- if admin_view.create_modal -%}
                                 {{ lib.add_modal_button(url=get_url('.create_view', url=return_url, modal=True),btn_class="nav-link", title=_gettext('Create New Record'), content=_gettext('Create')) }}
                             {% else %}
-                                <a href="{{ get_url('.create_view', url=return_url) }}" title="{{ _gettext('Create New Record') }}" class="nav-link">{{ _gettext('Create') }}</a>
+                                <a href="{{ get_url('.create_view', url=return_url) }}"
+                                   title="{{ _gettext('Create New Record') }}"
+                                   class="nav-link">{{ _gettext('Create') }}</a>
                             {%- endif -%}
                         </li>
                     {% endif %}
 
                     {% if admin_view.can_export %}
-                        {{ model_layout.export_options() }}
+                        {% if admin_view.export_types|length > 1 %}
+                            <li class="dropdown nav-item">
+                                <a class='dropdown-toggle' data-toggle="dropdown" href="javascript:void(0)">
+                                    {{ _gettext('Export') }}<b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu field-filters">
+                                    {% for export_type in admin_view.export_types %}
+                                        <li>
+                                            <a href="{{ get_url('.export', export_type=export_type, **request.args) }}"
+                                               title="{{ _gettext('Export') }}">{{ _gettext('Export') + ' ' + export_type|upper }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a href="{{ get_url('.export', export_type=admin_view.export_types[0], **request.args) }}"
+                                   title="{{ _gettext('Export') }}" class="nav-link">{{ _gettext('Export') }}</a>
+                            </li>
+                        {% endif %}
+                        {#                        {{ model_layout.export_options() }}#}
                     {% endif %}
 
                     {% block model_menu_bar_before_filters %}{% endblock %}
 
                     {% if filters %}
-                        <li class="dropdown">
-                            {{ model_layout.filter_options() }}
+                        <li class="dropdown nav-item">
+                            <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="javascript:void(0)">
+                                {{ _gettext('Add Filter') }}<b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu field-filters">
+                                {% for k in filter_groups %}
+                                    <li>
+                                        <a href="javascript:void(0)" class="dropdown-item filter"
+                                           onclick="return false;">{{ k }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            {#                            {{ model_layout.filter_options() }}#}
                         </li>
                     {% endif %}
 
@@ -50,8 +83,19 @@
                     {% endif %}
 
                     {% if actions %}
-                        <li class="dropdown">
-                            {{ actionlib.dropdown(actions) }}
+                        <li class="dropdown nav-item">
+                            <a class="btn dropdown-toggle nav-link" data-toggle="dropdown"
+                               href="javascript:void(0)">{{ _gettext('With selected') }}<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                {% for p in actions %}
+                                    <li>
+                                        <a href="javascript:void(0)"
+                                           class="dropdown-item"
+                                           onclick="return modelActions.execute('{{ p[0] }}');">{{ _gettext(p[1]) }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            {#                            {{ actionlib.dropdown(actions) }}#}
                         </li>
                     {% endif %}
 
@@ -77,12 +121,13 @@
                             {% block list_header scoped %}
                                 {% if actions %}
                                     <th class="list-checkbox-column">
-                                        <input type="checkbox" name="rowtoggle" class="action-rowtoggle" title="{{ _gettext('Select all records') }}"/>
+                                        <input type="checkbox" name="rowtoggle" class="action-rowtoggle"
+                                               title="{{ _gettext('Select all records') }}"/>
                                     </th>
                                 {% endif %}
                                 {% block list_row_actions_header %}
                                     {% if admin_view.column_display_actions %}
-                                        <th class="col-md-1">&nbsp;</th>
+                                        <th>&nbsp;</th>
                                     {% endif %}
                                 {% endblock %}
                                 {% for c, name in list_columns %}
@@ -90,7 +135,8 @@
                                     <th class="column-header col-{{ c }}">
                                         {% if admin_view.is_sortable(c) %}
                                             {% if sort_column == column %}
-                                                <a href="{{ sort_url(column, True) }}" title="{{ _gettext('Sort by %(name)s', name=name) }}">
+                                                <a href="{{ sort_url(column, True) }}"
+                                                   title="{{ _gettext('Sort by %(name)s', name=name) }}">
                                                     {{ name }}
                                                     {% if sort_desc %}
                                                         <span class="fa fa-chevron-up glyphicon glyphicon-chevron-up"></span>
@@ -99,7 +145,8 @@
                                                     {% endif %}
                                                 </a>
                                             {% else %}
-                                                <a href="{{ sort_url(column) }}" title="{{ _gettext('Sort by %(name)s', name=name) }}">{{ name }}</a>
+                                                <a href="{{ sort_url(column) }}"
+                                                   title="{{ _gettext('Sort by %(name)s', name=name) }}">{{ name }}</a>
                                             {% endif %}
                                         {% else %}
                                             {{ name }}
@@ -120,7 +167,9 @@
                                 {% block list_row scoped %}
                                     {% if actions %}
                                         <td>
-                                            <input type="checkbox" name="rowid" class="action-checkbox" value="{{ get_pk_value(row) }}" title="{{ _gettext('Select record') }}"/>
+                                            <input type="checkbox" name="rowid" class="action-checkbox"
+                                                   value="{{ get_pk_value(row) }}"
+                                                   title="{{ _gettext('Select record') }}"/>
                                         </td>
                                     {% endif %}
                                     {% block list_row_actions_column scoped %}

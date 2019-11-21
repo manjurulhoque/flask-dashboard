@@ -82,7 +82,7 @@ class MyModelView(sqla.ModelView):
     can_export = True
     can_view_details = True
     details_modal = True
-    list_template = "admin/role_list.html"
+    list_template = "admin/custom_list.html"
     create_modal_template = "admin/custom_modal.html"
 
 

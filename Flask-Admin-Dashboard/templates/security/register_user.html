@@ -2,27 +2,39 @@
 {% from "security/_macros.html" import render_field_with_errors, render_field %}
 {% include "security/_messages.html" %}
 {% block body %}
-{{ super() }}
-<br><br><br><br>
+    {{ super() }}
 
-<div class="row-fluid">
-    <div class="col-sm-8 col-sm-offset-2">
-    <br>
-        <div class="well">
-        <h1>Register</h1>
-            <form action="{{ url_for_security('register') }}" method="POST" name="register_user_form">
-                {{ register_user_form.hidden_tag() }}
-                {{ render_field_with_errors(register_user_form.email) }}
-                {{ render_field_with_errors(register_user_form.password) }}
-                {% if register_user_form.password_confirm %}
-                {{ render_field_with_errors(register_user_form.password_confirm) }}
-                {% endif %}
-                {{ render_field(register_user_form.submit, class="btn btn-primary") }}
-            </form>
-            <p>Already signed up? Please <a href="{{ url_for('security.login') }}">log in</a>.</p>
+    <div class="bg-primary">
+
+        <div class="account-pages">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-6 col-xl-5">
+                        <div class="card bg-pattern shadow-none my-5 pt-5">
+                            <div class="card-body">
+                                <div class="p-3">
+                                    <h4 class="font-18 text-center">Free Register</h4>
+                                    <p class="text-muted text-center mb-4">Get your free Veltrix account now.</p>
+                                    <form action="{{ url_for_security('register') }}" method="POST"
+                                          name="register_user_form">
+                                        {{ register_user_form.hidden_tag() }}
+                                        {{ render_field_with_errors(register_user_form.email) }}
+                                        {{ render_field_with_errors(register_user_form.password) }}
+                                        {% if register_user_form.password_confirm %}
+                                            {{ render_field_with_errors(register_user_form.password_confirm) }}
+                                        {% endif %}
+                                        {{ render_field(register_user_form.submit, class="btn btn-primary") }}
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-5 text-center text-white-50">
+                            <p>Already have an account ? <a href="{{ url_for('security.login') }}" class="font-500 text-white">
+                                Login </a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 {% endblock body %}
