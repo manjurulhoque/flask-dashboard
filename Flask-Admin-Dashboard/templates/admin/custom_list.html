@@ -82,22 +82,22 @@
                         </li>
                     {% endif %}
 
-                    {% if actions %}
-                        <li class="dropdown nav-item">
-                            <a class="btn dropdown-toggle nav-link" data-toggle="dropdown"
-                               href="javascript:void(0)">{{ _gettext('With selected') }}<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                {% for p in actions %}
-                                    <li>
-                                        <a href="javascript:void(0)"
-                                           class="dropdown-item"
-                                           onclick="return modelActions.execute('{{ p[0] }}');">{{ _gettext(p[1]) }}</a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
+{#                    {% if actions %}#}
+{#                        <li class="dropdown nav-item">#}
+{#                            <a class="btn dropdown-toggle nav-link" data-toggle="dropdown"#}
+{#                               href="javascript:void(0)">{{ _gettext('With selected') }}<b class="caret"></b></a>#}
+{#                            <ul class="dropdown-menu">#}
+{#                                {% for p in actions %}#}
+{#                                    <li>#}
+{#                                        <a href="javascript:void(0)"#}
+{#                                           class="dropdown-item"#}
+{#                                           onclick="return modelActions.execute('{{ p[0] }}');">{{ _gettext(p[1]) }}</a>#}
+{#                                    </li>#}
+{#                                {% endfor %}#}
+{#                            </ul>#}
                             {#                            {{ actionlib.dropdown(actions) }}#}
-                        </li>
-                    {% endif %}
+{#                        </li>#}
+{#                    {% endif %}#}
 
                     {% if search_supported %}
                         <li>

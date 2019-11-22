@@ -27,6 +27,7 @@
         <link href="{{ url_for('static',filename='assets/css/icons.css') }}" rel="stylesheet" type="text/css">
         <link href="{{ url_for('static',filename='assets/css/style.css') }}" rel="stylesheet" type="text/css">
         <link href="{{ admin_static.url(filename='admin/css/bootstrap3/admin.css', v='1.1.1') }}" rel="stylesheet">
+        <link href="{{ url_for('static',filename='assets/css/custom.css') }}" rel="stylesheet" type="text/css">
         {% if admin_view.extra_css %}
             {% for css_url in admin_view.extra_css %}
                 <link href="{{ css_url }}" rel="stylesheet">
@@ -362,6 +363,14 @@
 
     <script>
         $("a[title='Create New Record']").on('click', function () {
+            $('#fa_modal_window').addClass('show in');
+        });
+
+        $("a[title='View Record']").on('click', function () {
+            $('#fa_modal_window').addClass('show in');
+        });
+
+        $("a[title='Edit Record']").on('click', function () {
             $('#fa_modal_window').addClass('show in');
         });
     </script>

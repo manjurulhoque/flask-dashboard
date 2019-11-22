@@ -76,14 +76,15 @@ class MyModelView(sqla.ModelView):
                 # login
                 return redirect(url_for('security.login', next=request.url))
 
-    # can_edit = True
+    can_edit = True
     edit_modal = True
     create_modal = True
     can_export = True
     can_view_details = True
     details_modal = True
     list_template = "admin/custom_list.html"
-    create_modal_template = "admin/custom_modal.html"
+    create_modal_template = "admin/custom_create_modal.html"
+    edit_modal_template = "admin/custom_edit_modal.html"
 
 
 class UserView(MyModelView):
@@ -92,7 +93,7 @@ class UserView(MyModelView):
     column_exclude_list = ['password']
     # form_excluded_columns = column_exclude_list
     column_details_exclude_list = column_exclude_list
-    column_filters = column_editable_list
+    # column_filters = column_editable_list
 
 
 class CustomView(BaseView):
@@ -118,7 +119,8 @@ admin = flask_admin.Admin(
 # Add model views
 admin.add_view(MyModelView(Role, db.session, menu_icon_type='fa', menu_icon_value='fa-server', name="Roles"))
 admin.add_view(UserView(User, db.session, menu_icon_type='fa', menu_icon_value='fa-users', name="Users"))
-admin.add_view(CustomView(name="Custom view", endpoint='custom', menu_icon_type='fa', menu_icon_value='fa-connectdevelop', ))
+admin.add_view(
+    CustomView(name="Custom view", endpoint='custom', menu_icon_type='fa', menu_icon_value='fa-connectdevelop', ))
 
 
 # define a context processor for merging flask-admin's template context into the
