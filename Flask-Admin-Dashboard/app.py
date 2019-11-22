@@ -80,8 +80,8 @@ class MyModelView(sqla.ModelView):
     edit_modal = True
     create_modal = True
     can_export = True
-    can_view_details = True
-    details_modal = True
+    # can_view_details = True
+    # details_modal = True
     list_template = "admin/custom_list.html"
     create_modal_template = "admin/custom_create_modal.html"
     edit_modal_template = "admin/custom_edit_modal.html"
